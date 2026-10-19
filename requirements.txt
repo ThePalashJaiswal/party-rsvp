@@ -1,0 +1,4 @@
+streamlit>=1.50,<2
+gspread>=6.1,<7
+pandas>=2.2
+tzdata>=2024.1

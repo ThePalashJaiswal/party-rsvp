@@ -1,0 +1,256 @@
+@import url('https://fonts.googleapis.com/css2?family=Chonburi&family=Quicksand:wght@500;600;700&display=swap');
+
+/* ------------------------------------------------------------------
+   Halloween Costume Party — design tokens, matched to the invite:
+   crimson engraving on warm grey, wavy frame, four-point sparkles.
+------------------------------------------------------------------- */
+:root {
+  --paper: #D9D9D9;          /* exact invite background */
+  --paper-hi: #E6E5E3;       /* raised surfaces */
+  --paper-lo: #CFCDCB;
+  --field: #F1EFED;          /* input fields */
+  --crimson: #AB0000;        /* invite red */
+  --crimson-deep: #850000;
+  --crimson-tint: rgba(171, 0, 0, 0.08);
+  --ink: #3A0B0B;            /* body text: darker than crimson for long reading */
+  --ink-soft: #6B3A3A;
+  --on-crimson: #FBF7F4;
+  --line: rgba(171, 0, 0, 0.28);
+  --line-soft: rgba(171, 0, 0, 0.16);
+  --shadow: 0 10px 26px -18px rgba(58, 11, 11, 0.55);
+  --radius: 20px;
+  --display: 'Chonburi', Georgia, 'Times New Roman', serif;
+  --body: 'Quicksand', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --wave-h: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2040%2012%27%3E%3Cpath%20fill%3D%27none%27%20stroke%3D%27%23AB0000%27%20stroke-width%3D%273.2%27%20stroke-linecap%3D%27round%27%20d%3D%27M0%206%20Q10%200%2020%206%20T40%206%27%2F%3E%3C%2Fsvg%3E");
+  --wave-v: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2012%2040%27%3E%3Cpath%20fill%3D%27none%27%20stroke%3D%27%23AB0000%27%20stroke-width%3D%273.2%27%20stroke-linecap%3D%27round%27%20d%3D%27M6%200%20Q0%2010%206%2020%20T6%2040%27%2F%3E%3C%2Fsvg%3E");
+  --squiggle: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2040%2012%27%3E%3Cpath%20fill%3D%27none%27%20stroke%3D%27%23AB0000%27%20stroke-width%3D%273%27%20stroke-linecap%3D%27round%27%20d%3D%27M0%206%20Q10%200%2020%206%20T40%206%27%2F%3E%3C%2Fsvg%3E");
+}
+
+/* ------------------------------------------------------------------
+   Canvas
+------------------------------------------------------------------- */
+html, body { overflow-x: hidden; }
+.stApp { background: var(--paper); color: var(--ink); font-family: var(--body); }
+.stApp, .stApp p, .stApp label, .stApp input, .stApp textarea, .stApp button, .stApp li { font-family: var(--body); }
+[data-testid="stHeader"] { background: transparent; height: 0; }
+[data-testid="stToolbar"], [data-testid="stDecoration"], #MainMenu, footer { display: none !important; }
+[data-testid="stMainBlockContainer"], .block-container {
+  max-width: 600px; padding: 1.25rem 1rem 4rem; position: relative; z-index: 1;
+}
+body:has(.host-mode) [data-testid="stMainBlockContainer"],
+body:has(.host-mode) .block-container { max-width: 1200px; padding-top: 1.5rem; }
+
+/* sparkles in the corners, as on the invite */
+.bg-decor { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.spark { position: absolute; height: auto; }
+.s-tl1 { width: 46px; top: 22px; left: 14px; }
+.s-tl2 { width: 30px; top: 8px; left: 72px; animation: twinkle 4s ease-in-out infinite; }
+.s-tl3 { width: 9px; top: 18px; left: 54px; }
+.s-tl4 { width: 9px; top: 78px; left: 82px; }
+.s-br1 { width: 46px; bottom: 22px; right: 70px; animation: twinkle 5s ease-in-out infinite 1s; }
+.s-br2 { width: 30px; bottom: 44px; right: 16px; }
+.s-br3 { width: 9px; bottom: 82px; right: 58px; }
+.s-br4 { width: 9px; bottom: 14px; right: 34px; }
+@keyframes twinkle { 0%, 100% { transform: scale(1) rotate(0); opacity: 1; } 50% { transform: scale(.82) rotate(12deg); opacity: .75; } }
+
+/* ------------------------------------------------------------------
+   Typography
+------------------------------------------------------------------- */
+.display, .step-title, h1, h2, h3 { font-family: var(--display) !important; color: var(--crimson) !important; font-weight: 400 !important; letter-spacing: 0.01em; }
+.display { font-size: clamp(2rem, 8.4vw, 2.9rem); line-height: 1.06; margin: 0.2rem 0 0.4rem; text-transform: uppercase; }
+.step-title { font-size: clamp(1.45rem, 6vw, 1.9rem); line-height: 1.2; margin: 0.4rem 0 0.3rem; }
+.eyebrow { text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.78rem; font-weight: 700; color: var(--crimson); margin: 0.4rem 0 0; }
+.hosts { font-weight: 600; font-size: 1.02rem; color: var(--ink-soft); margin: 0; }
+.headline { font-size: 1.12rem; font-weight: 600; color: var(--crimson); margin: 0.5rem 0 0.9rem; }
+.lede { color: var(--ink-soft); font-size: 1rem; font-weight: 500; margin: 0.2rem 0 0.9rem; line-height: 1.55; }
+.lede.small { font-size: 0.92rem; margin-bottom: 0.4rem; }
+.sub { font-weight: 700; color: var(--ink); margin: 0.9rem 0 0.1rem; }
+.sub span, .person span { font-weight: 500; color: var(--ink-soft); }
+.person { font-family: var(--display); font-size: 1.15rem; color: var(--crimson); margin: 0 0 0.35rem; }
+.deadline { font-size: 0.95rem; font-weight: 600; color: var(--ink-soft); margin: 0.8rem 0 0.25rem; }
+.deadline strong { color: var(--crimson); }
+[data-testid="stCaptionContainer"], .stCaption, small { color: var(--ink-soft) !important; }
+.stApp p, .stApp li { color: var(--ink); }
+
+/* ------------------------------------------------------------------
+   Welcome: wrapped in the invite's wavy frame
+------------------------------------------------------------------- */
+.welcome { text-align: center; position: relative; margin-top: 1.4rem; padding: 1.4rem 1.3rem 1.3rem;
+  background:
+    var(--wave-h) top 0 left 0 / 40px 12px repeat-x,
+    var(--wave-h) bottom 0 left 0 / 40px 12px repeat-x,
+    var(--wave-v) left 0 top 0 / 12px 40px repeat-y,
+    var(--wave-v) right 0 top 0 / 12px 40px repeat-y; }
+.hero { aspect-ratio: 2 / 1; background: var(--paper); }
+.hero img, .hero .hero-svg { width: 100%; height: 100%; object-fit: cover; display: block; }
+.squiggle { height: 12px; width: 120px; margin: 0.7rem auto 0.2rem; background: var(--squiggle) repeat-x center / 40px 12px; }
+.chips { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; }
+.chip { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.42rem 0.85rem; border-radius: 999px;
+  background: var(--paper-hi); border: 1.5px solid var(--line); font-size: 0.9rem; font-weight: 700; color: var(--crimson); max-width: 100%; }
+.chip span { overflow-wrap: anywhere; text-align: left; color: var(--crimson); }
+.chip a { color: var(--crimson); text-decoration: underline; text-underline-offset: 3px; }
+.chip .icon, .dresscode .icon { width: 16px; height: 16px; flex: none; }
+
+.dresscode { display: flex; gap: 0.7rem; align-items: flex-start; text-align: left; margin: 0.95rem auto 0; max-width: 460px;
+  padding: 0.8rem 1rem; border-radius: 16px; background: var(--crimson-tint); border: 1.5px dashed var(--crimson); }
+.dresscode .icon { width: 28px; height: 28px; margin-top: 2px; }
+.dresscode p { margin: 0; }
+.dc-label { text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.72rem; font-weight: 700; color: var(--crimson) !important; }
+.dc-text { font-weight: 600; color: var(--ink); line-height: 1.45; }
+
+.notice { margin-top: 1.1rem; padding: 1rem 1.1rem; border-radius: 16px; background: var(--paper-hi); border: 1.5px solid var(--line);
+  color: var(--ink); line-height: 1.5; font-weight: 500; }
+.notice.closed { border-left: 5px solid var(--crimson); }
+
+.fade-up { animation: fadeUp 0.7s cubic-bezier(.2, .7, .2, 1) both; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+/* ------------------------------------------------------------------
+   Buttons
+------------------------------------------------------------------- */
+.stButton > button, .stDownloadButton > button, .stLinkButton > a, .stFormSubmitButton > button {
+  border-radius: 999px !important; min-height: 3rem; font-weight: 700 !important; letter-spacing: 0.02em;
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+}
+button[data-testid="stBaseButton-primary"], button[data-testid="stBaseButton-primaryFormSubmit"] {
+  background: var(--crimson) !important; border: none !important; color: var(--on-crimson) !important;
+  box-shadow: 0 8px 18px -10px rgba(133, 0, 0, 0.9);
+}
+button[data-testid="stBaseButton-primary"] p, button[data-testid="stBaseButton-primaryFormSubmit"] p { color: var(--on-crimson) !important; }
+button[data-testid="stBaseButton-primary"]:hover { background: var(--crimson-deep) !important; transform: translateY(-1px); }
+button[data-testid="stBaseButton-secondary"], a[data-testid="stBaseLinkButton-secondary"],
+button[data-testid="stBaseButton-secondaryFormSubmit"] {
+  background: transparent !important; border: 2px solid var(--crimson) !important; color: var(--crimson) !important;
+}
+button[data-testid="stBaseButton-secondary"] p, a[data-testid="stBaseLinkButton-secondary"] p,
+button[data-testid="stBaseButton-secondaryFormSubmit"] p { color: var(--crimson) !important; }
+button[data-testid="stBaseButton-secondary"]:hover, a[data-testid="stBaseLinkButton-secondary"]:hover { background: var(--crimson-tint) !important; }
+button[data-testid="stBaseButton-tertiary"] { color: var(--crimson) !important; text-decoration: underline; text-underline-offset: 4px; margin: 0 auto; display: block; }
+button[data-testid="stBaseButton-tertiary"] p { color: var(--crimson) !important; font-weight: 700; }
+button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline: 3px solid var(--ink) !important; outline-offset: 2px;
+}
+
+/* ------------------------------------------------------------------
+   Inputs
+------------------------------------------------------------------- */
+.stTextInput input, .stTextArea textarea, .stNumberInput input {
+  background: var(--field) !important; border-radius: 14px !important; font-size: 16px !important; color: var(--ink) !important;
+  font-weight: 600; caret-color: var(--crimson);
+}
+.stTextInput input::placeholder, .stTextArea textarea::placeholder { color: #9A7B7B !important; opacity: 1; font-weight: 500; }
+[data-baseweb="input"], [data-baseweb="textarea"], [data-baseweb="base-input"] {
+  border-radius: 14px !important; background: var(--field) !important; border-color: var(--line) !important;
+}
+[data-baseweb="input"]:focus-within, [data-baseweb="textarea"]:focus-within { border-color: var(--crimson) !important; }
+.stNumberInput button { background: var(--paper-lo) !important; color: var(--crimson) !important; }
+[data-testid="stWidgetLabel"] p, .stTextInput label p, .stTextArea label p, .stNumberInput label p {
+  color: var(--ink) !important; font-weight: 700; font-size: 0.97rem;
+}
+[data-testid="InputInstructions"] { color: #9A7B7B !important; }
+
+/* pills / segmented control as selection cards */
+[data-testid="stButtonGroup"] { gap: 0.5rem; flex-wrap: wrap; }
+button[data-testid="stBaseButton-pills"], button[data-testid="stBaseButton-pillsActive"],
+button[data-testid="stBaseButton-segmented_control"], button[data-testid="stBaseButton-segmented_controlActive"] {
+  min-height: 2.75rem; border-radius: 14px !important; font-weight: 700 !important; padding: 0.45rem 0.9rem !important;
+  background: var(--field) !important; border: 1.5px solid var(--line) !important; color: var(--ink) !important;
+  transition: all .15s ease;
+}
+button[data-testid="stBaseButton-pills"] p, button[data-testid="stBaseButton-segmented_control"] p { color: var(--ink) !important; }
+button[data-testid="stBaseButton-pillsActive"], button[data-testid="stBaseButton-segmented_controlActive"] {
+  background: var(--crimson) !important; border-color: var(--crimson) !important; box-shadow: 0 6px 14px -8px rgba(133, 0, 0, .9);
+}
+button[data-testid="stBaseButton-pillsActive"] p, button[data-testid="stBaseButton-segmented_controlActive"] p,
+button[data-testid="stBaseButton-pillsActive"] span, button[data-testid="stBaseButton-segmented_controlActive"] span { color: var(--on-crimson) !important; }
+
+[data-testid="stCheckbox"] label p, .stToggle label p { color: var(--ink) !important; font-weight: 700; }
+
+/* card containers (st.container(key="card_*")) */
+[class*="st-key-card_"] {
+  background: var(--paper-hi); border: 1.5px solid var(--line); border-radius: var(--radius); padding: 1rem 1rem 0.6rem;
+  box-shadow: var(--shadow); animation: fadeUp .5s ease both;
+}
+[data-testid="stExpander"] details { background: var(--paper-hi); border-radius: 16px; border: 1.5px solid var(--line); }
+[data-testid="stExpander"] summary p, [data-testid="stExpander"] summary span { color: var(--crimson) !important; font-weight: 700; }
+[data-testid="stAlert"] { border-radius: 14px; }
+
+/* ------------------------------------------------------------------
+   Progress
+------------------------------------------------------------------- */
+.progress ol { list-style: none; display: flex; justify-content: space-between; padding: 0; margin: 0.3rem 0 0.6rem; position: relative; }
+.progress ol::before { content: ""; position: absolute; left: 6%; right: 6%; top: 3px; height: 12px;
+  background: var(--squiggle) repeat-x center / 30px 9px; opacity: .35; }
+.progress li { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 0.3rem; flex: 1; }
+.progress .dot { width: 18px; height: 18px; border-radius: 50%; background: var(--paper); border: 2px solid var(--line); transition: all .3s ease; }
+.progress li.done .dot { background: var(--crimson); border-color: var(--crimson); }
+.progress li.current .dot { background: var(--paper); border: 5px solid var(--crimson); box-shadow: 0 0 0 4px var(--crimson-tint); }
+.progress .lbl { font-size: 0.72rem; font-weight: 700; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.08em; }
+.progress li.current .lbl { color: var(--crimson); }
+
+/* ------------------------------------------------------------------
+   Review & confirmation
+------------------------------------------------------------------- */
+.summary { background: var(--paper-hi); border: 1.5px solid var(--line); border-radius: var(--radius); padding: 1.1rem 1.15rem; box-shadow: var(--shadow); }
+.summary h3 { font-size: 1.05rem !important; margin: 0.9rem 0 0.35rem; padding: 0; }
+.summary h3:first-child { margin-top: 0; }
+.summary dl { display: grid; grid-template-columns: max-content 1fr; gap: 0.3rem 0.9rem; margin: 0; }
+.summary dt { color: var(--ink-soft); font-weight: 600; }
+.summary dd { margin: 0; font-weight: 700; color: var(--ink); overflow-wrap: anywhere; }
+.summary ul { margin: 0; padding-left: 1.1rem; }
+.summary li { margin: 0.2rem 0; }
+.summary p { margin: 0.2rem 0; overflow-wrap: anywhere; }
+.summary .kv span { color: var(--ink-soft); font-weight: 600; margin-right: 0.35rem; }
+.summary .pre { white-space: pre-wrap; }
+.allergy { display: inline-block; margin-left: 0.3rem; padding: 0.05rem 0.5rem; border-radius: 999px; background: var(--crimson);
+  color: var(--on-crimson); font-size: 0.8rem; font-weight: 700; }
+
+.done { text-align: center; padding-top: 0.5rem; }
+.seal { width: 120px; margin: 0.2rem auto 0.3rem; animation: pop .7s cubic-bezier(.2, 1.4, .4, 1) both; }
+.seal .toast { width: 100%; height: auto; display: block; mix-blend-mode: multiply; transform-origin: 50% 90%;
+  animation: cheers 2.6s ease-in-out infinite 0.9s; }
+.seal .jack { width: 100%; height: auto; display: block; }
+@keyframes pop { from { transform: scale(.5) translateY(20px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes cheers { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(-3deg); } }
+.recap { display: inline-block; padding: 0.45rem 0.95rem; border-radius: 999px; background: var(--paper-hi); border: 1.5px solid var(--line);
+  font-weight: 700; color: var(--crimson); }
+
+.confetti { position: fixed; inset: 0; pointer-events: none; z-index: 1000; overflow: hidden; }
+.confetti .piece { position: absolute; top: -24px; width: 12px; height: 12px; opacity: 0;
+  animation-name: fall; animation-timing-function: cubic-bezier(.3, .6, .5, 1); animation-fill-mode: forwards; }
+.confetti .star { width: 16px; height: 16px; clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%); }
+.confetti .bone { width: 18px; height: 6px; border-radius: 4px; }
+.confetti .dot { border-radius: 50%; width: 7px; height: 7px; }
+@keyframes fall {
+  0% { opacity: 0; transform: translateY(0) rotate(0); }
+  10% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(105vh) rotate(var(--r)); }
+}
+
+[data-testid="stCode"] pre, .stCode pre { white-space: pre-wrap !important; word-break: break-all; }
+[data-testid="stCode"] { border: 1.5px solid var(--line); border-radius: 12px; }
+
+.st-key-review_jumps { flex-wrap: wrap; gap: 0.2rem 1rem; justify-content: center; }
+.st-key-review_jumps button[data-testid="stBaseButton-tertiary"] { margin: 0; min-height: 2.25rem; }
+
+/* host */
+.host-title { font-size: 2rem; margin: 0; text-transform: uppercase; }
+[data-testid="stMetric"] { background: var(--paper-hi); border: 1.5px solid var(--line); border-radius: 16px; padding: 0.8rem 1rem; }
+[data-testid="stMetricValue"] { font-family: var(--display); color: var(--crimson) !important; }
+[data-testid="stMetricLabel"] p { color: var(--ink-soft) !important; }
+
+/* ------------------------------------------------------------------
+   Small screens & motion preferences
+------------------------------------------------------------------- */
+@media (max-width: 480px) {
+  [data-testid="stMainBlockContainer"], .block-container { padding: 0.75rem 0.85rem 3.5rem; }
+  .welcome { padding: 1.2rem 1rem 1.1rem; margin-top: 2.6rem; }
+  .progress .lbl { font-size: 0.62rem; letter-spacing: 0.04em; }
+  .s-tl1 { width: 34px; } .s-tl2 { width: 22px; left: 52px; } .s-tl4 { display: none; }
+  .s-br1 { width: 34px; right: 52px; } .s-br2 { width: 22px; }
+  .chip { font-size: 0.84rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .confetti { display: none; }
+}
